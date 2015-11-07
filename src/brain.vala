@@ -74,8 +74,7 @@ namespace Chess {
         }
 
         public void make_teams() {
-            this.white_pieces = new GLib.List<Chess.Piece>();
-            this.black_pieces = new GLib.List<Chess.Piece>();
+            this.eat_all_pieces();
             this.possible_movements = new GLib.List<Chess.PossibleMovement>();
             this.current_turn = Utils.TeamType.WHITE;
 
@@ -169,9 +168,59 @@ namespace Chess {
             if (this.current_piece != null) {
                 this.current_piece.set_position(movement.pos_x, movement.pos_y);
                 this.current_turn = (this.current_turn == Utils.TeamType.WHITE)? Utils.TeamType.BLACK: Utils.TeamType.WHITE;
+
+                if (this.current_turn == Utils.TeamType.WHITE) {
+                    foreach (Chess.Piece piece in this.white_pieces) {
+                        if (movement.pos_x == piece.pos_x && movement.pos_y == piece.pos_y) {
+                            this.eat_piece(piece);
+                            break;
+                        }
+                    }
+                } else if (this.current_turn == Utils.TeamType.BLACK) {
+                    foreach (Chess.Piece piece in this.black_pieces) {
+                        if (movement.pos_x == piece.pos_x && movement.pos_y == piece.pos_y) {
+                            this.eat_piece(piece);
+                            break;
+                        }
+                    }
+                }
             }
 
             this.remove_all_possible_movements();
+        }
+
+        public void eat_piece(Chess.Piece piece) {
+            if (piece.color == Utils.TeamType.WHITE) {
+                foreach (Chess.Piece check in this.white_pieces) {
+                    if (piece == check) {
+                        this.white_pieces.remove(piece);
+                        break;
+                    }
+                }
+            } else if (piece.color == Utils.TeamType.BLACK) {
+                foreach (Chess.Piece check in this.white_pieces) {
+                    if (piece == check) {
+                        this.black_pieces.remove(piece);
+                        break;
+                    }
+                }
+            }
+
+            Vame.Sprite sprite = (piece as Vame.Sprite);
+            this.board.remove_sprite(sprite);
+        }
+
+        public void eat_all_pieces() {
+            foreach (Chess.Piece piece in this.white_pieces) {
+                this.eat_piece(piece);
+            }
+
+            foreach (Chess.Piece piece in this.black_pieces) {
+                this.eat_piece(piece);
+            }
+
+            this.white_pieces = new GLib.List<Chess.Piece>();
+            this.black_pieces = new GLib.List<Chess.Piece>();
         }
     }
 }
