@@ -139,19 +139,19 @@ namespace Chess {
                     break;
 
                 case Utils.PieceType.BISHOP:
-                    movements = this.get_bishop_movements();
+                    movements = this.get_bishop_movements(team_positions, enemy_positions);
                     break;
 
                 case Utils.PieceType.KING:
-                    movements = this.get_king_movements();
+                    movements = this.get_king_movements(team_positions, enemy_positions);
                     break;
 
                 case Utils.PieceType.QUEEN:
-                    movements = this.get_rook_movements(team_positions, enemy_positions) + this.get_bishop_movements();
+                    movements = this.get_rook_movements(team_positions, enemy_positions) + this.get_bishop_movements(team_positions, enemy_positions);
                     break;
 
                 case Utils.PieceType.PAWN:
-                    movements = this.get_pawn_movements();
+                    movements = this.get_pawn_movements(team_positions, enemy_positions);
                     break;
             }
 
@@ -288,30 +288,68 @@ namespace Chess {
             return movements;
         }
 
-        private string get_bishop_movements() {
+        private string get_bishop_movements(string team_positions, string enemy_positions) {
             string movements = "";
             for (int i=1; i <= 8; i++) {
                 if (this.pos_x + i <= 8 && this.pos_y + i <= 8) {
-                    movements += " %d:%d ".printf(this.pos_x + i, this.pos_y + i);
+                    string m = " %d:%d ".printf(this.pos_x + i, this.pos_y + i);
+                    if (m in team_positions) {
+                        break;
+                    } else if (m in enemy_positions) {
+                        movements += m;
+                        break;
+                    } else if (!(m in team_positions) && !(m in enemy_positions)) {
+                        movements += m;
+                    }
                 }
+            }
 
+            for (int i=1; i <= 8; i++) {
                 if (this.pos_x - i >= 1 && this.pos_y + i <= 8) {
-                    movements += " %d:%d ".printf(this.pos_x - i, this.pos_y + i);
+                    string m = " %d:%d ".printf(this.pos_x - i, this.pos_y + i);
+                    if (m in team_positions) {
+                        break;
+                    } else if (m in enemy_positions) {
+                        movements += m;
+                        break;
+                    } else if (!(m in team_positions) && !(m in enemy_positions)) {
+                        movements += m;
+                    }
                 }
+            }
 
+            for (int i=1; i <= 8; i++) {
                 if (this.pos_x + i <= 8 && this.pos_y - i >= 1) {
-                    movements += " %d:%d ".printf(this.pos_x + i, this.pos_y - i);
+                    string m = " %d:%d ".printf(this.pos_x + i, this.pos_y - i);
+                    if (m in team_positions) {
+                        break;
+                    } else if (m in enemy_positions) {
+                        movements += m;
+                        break;
+                    } else if (!(m in team_positions) && !(m in enemy_positions)) {
+                        movements += m;
+                    }
                 }
+            }
 
+            for (int i=1; i <= 8; i++) {
                 if (this.pos_x - i >= 1 && this.pos_y - i >= 1) {
-                    movements += " %d:%d ".printf(this.pos_x - i, this.pos_y - i);
+                    string m = " %d:%d ".printf(this.pos_x - i, this.pos_y - i);
+                    if (m in team_positions) {
+                        break;
+                    } else if (m in enemy_positions) {
+                        movements += m;
+                        break;
+                    } else if (!(m in team_positions) && !(m in enemy_positions)) {
+                        movements += m;
+                    }
                 }
             }
 
             return movements;
         }
 
-        private string get_king_movements() {
+        private string get_king_movements(string team_positions, string enemy_positions) {
             string movements = "";
             if (this.pos_x - 1 >= 1) {
                 if (this.pos_y - 1 >= 1) {
@@ -348,7 +386,7 @@ namespace Chess {
             return movements;
         }
 
-        private string get_pawn_movements() {
+        private string get_pawn_movements(string team_positions, string enemy_positions) {
             int y_white_pawn = 7;
             int y_black_pawn = 2;
 
