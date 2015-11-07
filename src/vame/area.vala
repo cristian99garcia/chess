@@ -137,23 +137,18 @@ namespace Vame {
             if (event.get_event_type() == Gdk.EventType.BUTTON_PRESS &&
                 event.get_event_type() != Gdk.EventType.DOUBLE_BUTTON_PRESS &&
                 event.get_event_type() != Gdk.EventType.TRIPLE_BUTTON_PRESS) {
-                Vame.ButtonType button = Vame.ButtonType.LEFT;
 
-                switch (event.button) {
-                case 1:
-                    button = Vame.ButtonType.LEFT;
-                    break;
-
-                case 2:
-                    button = Vame.ButtonType.MIDDLE;
-                    break;
-
-                case 3:
-                    button = Vame.ButtonType.RIGHT;
-                    break;
+                ButtonType type = ButtonType.LEFT;
+                if (event.button == 1) {
+                    type = ButtonType.LEFT;
+                } else if (event.button == 2) {
+                    type = ButtonType.MIDDLE;
+                } else if (event.button == 3) {
+                    type = ButtonType.RIGHT;
                 }
 
-                this.click(button, (int)event.x, (int)event.y);
+                this.click_released(type, (int)event.x, (int)event.y);
+                this.click(type, (int)event.x, (int)event.y);
             }
             return false;
         }
@@ -162,7 +157,17 @@ namespace Vame {
             if (event.get_event_type() == Gdk.EventType.BUTTON_RELEASE &&
                 event.get_event_type() != Gdk.EventType.DOUBLE_BUTTON_PRESS &&
                 event.get_event_type() != Gdk.EventType.TRIPLE_BUTTON_PRESS) {
-                this.click_released((ButtonType)event.type, (int)event.x, (int)event.y);
+
+                ButtonType type = ButtonType.LEFT;
+                if (event.button == 1) {
+                    type = ButtonType.LEFT;
+                } else if (event.button == 2) {
+                    type = ButtonType.MIDDLE;
+                } else if (event.button == 3) {
+                    type = ButtonType.RIGHT;
+                }
+
+                this.click_released(type, (int)event.x, (int)event.y);
             }
             return false;
         }

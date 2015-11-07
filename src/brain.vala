@@ -30,6 +30,47 @@ namespace Chess {
 
         public Brain(Chess.Board board) {
             this.board = board;
+            this.board.click.connect(this.clicked_from_board);
+        }
+
+        private void clicked_from_board(Vame.GameArea area, Vame.ButtonType button_type, int x, int y) {
+            // FIXME: se debe checkear si se selecciona una pieza enemiga para "comerla"
+            if (button_type != Vame.ButtonType.LEFT) {
+                return;
+            }
+
+            bool unselect = true;
+            foreach (Chess.Piece piece in this.white_pieces) {
+                if (x >= piece.x && x <= piece.x + piece.image.width &&
+                    y >= piece.y && y <= piece.y + piece.image.height) {
+
+                    unselect = false;
+                }
+            }
+
+            if (!unselect) {
+                return;
+            }
+
+            foreach (Chess.Piece piece in this.white_pieces) {
+                if (x >= piece.x && x <= piece.x + piece.image.width &&
+                    y >= piece.y && y <= piece.y + piece.image.height) {
+
+                    unselect = false;
+                }
+            }
+
+            foreach (Chess.PossibleMovement movement in this.possible_movements) {
+                if (x >= movement.x && x <= movement.x + movement.image.width &&
+                    y >= movement.y && y <= movement.y + movement.image.height) {
+
+                    unselect = false;
+                }
+            }
+
+            if (unselect) {
+                this.remove_all_possible_movements();
+            }
         }
 
         public void make_teams() {
