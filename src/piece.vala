@@ -106,12 +106,32 @@ namespace Chess {
             this.set_pos(real_x, real_y);
         }
 
-        public string get_possible_movements() {
+        public string get_possible_movements(Chess.Brain brain) {
             string movements = "";
+            string team_positions = "";
+            string enemy_positions = "";
+
+            string a = "";
+            foreach (Chess.Piece piece in brain.white_pieces) {
+                a += " %d:%d ".printf(piece.pos_x, piece.pos_y);
+            }
+
+            string b = "";
+            foreach (Chess.Piece piece in brain.black_pieces) {
+                b += " %d:%d ".printf(piece.pos_x, piece.pos_y);
+            }
+
+            if (this.color == Utils.TeamType.WHITE) {
+                team_positions = a;
+                enemy_positions = b;
+            } else if (this.color == Utils.TeamType.BLACK) {
+                team_positions = b;
+                enemy_positions = a;
+            }
 
             switch (this.type) {
                 case Utils.PieceType.ROOK:
-                    movements = this.get_rook_movements();
+                    movements = this.get_rook_movements(team_positions, enemy_positions);
                     break;
 
                 case Utils.PieceType.KNIGHT:
@@ -127,7 +147,7 @@ namespace Chess {
                     break;
 
                 case Utils.PieceType.QUEEN:
-                    movements = this.get_rook_movements() + this.get_bishop_movements();
+                    movements = this.get_rook_movements(team_positions, enemy_positions) + this.get_bishop_movements();
                     break;
 
                 case Utils.PieceType.PAWN:
@@ -138,23 +158,61 @@ namespace Chess {
             return movements;
         }
 
-        private string get_rook_movements() {
+        private string get_rook_movements(string team_positions, string enemy_positions) {
             string movements = "";
             for (int i=1; i < 8; i++) {
                 if (this.pos_x + i <= 8) {
-                    movements += " %d:%d ".printf(this.pos_x + i, this.pos_y);
+                    string m = " %d:%d ".printf(this.pos_x + i, this.pos_y);
+                    if (m in team_positions) {
+                        break;
+                    } else if (m in enemy_positions) {
+                        movements += m;
+                        break;
+                    } else if (!(m in team_positions) && !(m in enemy_positions)) {
+                        movements += m;
+                    }
                 }
+            }
 
+            for (int i=1; i < 8; i++) {
                 if (this.pos_x - i >= 1) {
-                    movements += " %d:%d ".printf(this.pos_x - i, this.pos_y);
+                    string m = " %d:%d ".printf(this.pos_x - i, this.pos_y);
+                    if (m in team_positions) {
+                        break;
+                    } else if (m in enemy_positions) {
+                        movements += m;
+                        break;
+                    } else if (!(m in team_positions) && !(m in enemy_positions)) {
+                        movements += m;
+                    }
                 }
+            }
 
+            for (int i=1; i < 8; i++) {
                 if (this.pos_y + i <= 8) {
-                    movements += " %d:%d ".printf(this.pos_x, this.pos_y + i);
+                    string m = " %d:%d ".printf(this.pos_x, this.pos_y + i);
+                    if (m in team_positions) {
+                        break;
+                    } else if (m in enemy_positions) {
+                        movements += m;
+                        break;
+                    } else if (!(m in team_positions) && !(m in enemy_positions)) {
+                        movements += m;
+                    }
                 }
+            }
 
+            for (int i=1; i < 8; i++) {
                 if (this.pos_y - i >= 1) {
-                    movements += " %d:%d ".printf(this.pos_x, this.pos_y - i);
+                    string m = " %d:%d ".printf(this.pos_x, this.pos_y - i);
+                    if (m in team_positions) {
+                        break;
+                    } else if (m in enemy_positions) {
+                        movements += m;
+                        break;
+                    } else if (!(m in team_positions) && !(m in enemy_positions)) {
+                        movements += m;
+                    }
                 }
             }
 

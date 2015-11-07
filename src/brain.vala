@@ -132,7 +132,7 @@ namespace Chess {
             }
 
             this.current_piece = piece;
-            string movements = piece.get_possible_movements();
+            string movements = piece.get_possible_movements(this);
 
             this.remove_all_possible_movements();
 
