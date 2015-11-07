@@ -26,6 +26,7 @@ namespace Chess {
         public Chess.Board board;
 
         public Chess.Piece? current_piece = null;
+        public Utils.TeamType current_turn;
 
         public Brain(Chess.Board board) {
             this.board = board;
@@ -35,6 +36,7 @@ namespace Chess {
             this.white_pieces = new GLib.List<Chess.Piece>();
             this.black_pieces = new GLib.List<Chess.Piece>();
             this.possible_movements = new GLib.List<Chess.PossibleMovement>();
+            this.current_turn = Utils.TeamType.WHITE;
 
             for (int i=1; i <= 8; i++) {  // 8 pawns for the 2 teams
                 this.make_piece(Utils.PieceType.PAWN, Utils.TeamType.WHITE, i, 7);
@@ -83,6 +85,11 @@ namespace Chess {
 
         public void show_movements(Vame.Sprite sprite) {
             Chess.Piece piece = (sprite as Chess.Piece);
+
+            if (piece.color != this.current_turn) {
+                return;
+            }
+
             this.current_piece = piece;
             string movements = piece.get_possible_movements();
 
@@ -120,6 +127,7 @@ namespace Chess {
             Chess.PossibleMovement movement = (sprite as Chess.PossibleMovement);
             if (this.current_piece != null) {
                 this.current_piece.set_position(movement.pos_x, movement.pos_y);
+                this.current_turn = (this.current_turn == Utils.TeamType.WHITE)? Utils.TeamType.BLACK: Utils.TeamType.WHITE;
             }
 
             this.remove_all_possible_movements();
