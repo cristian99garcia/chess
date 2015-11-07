@@ -390,17 +390,64 @@ namespace Chess {
             int y_white_pawn = 7;
             int y_black_pawn = 2;
 
+            // Normal movements
+            // First move
             string movements = "";
             if (this.color == Utils.TeamType.WHITE && this.pos_y == y_white_pawn) {
-                movements += " %d:%d ".printf(this.pos_x, y_white_pawn - 1);
-                movements += " %d:%d ".printf(this.pos_x, y_white_pawn - 2);
+                string m1 = " %d:%d ".printf(this.pos_x, y_white_pawn - 1);
+                string m2 = " %d:%d ".printf(this.pos_x, y_white_pawn - 2);
+                if (!(m1 in team_positions) && !(m1 in enemy_positions)) {
+                    movements += m1;
+
+                    if (!(m2 in team_positions) && !(m2 in enemy_positions)) {
+                        movements += m2;
+                    }
+                }
             } else if (this.color == Utils.TeamType.BLACK && this.pos_y == y_black_pawn) {
-                movements += " %d:%d ".printf(this.pos_x, y_black_pawn + 1);
-                movements += " %d:%d ".printf(this.pos_x, y_black_pawn + 2);
-            } else if (this.color == Utils.TeamType.WHITE && this.pos_y != y_white_pawn) {
-                movements += " %d:%d ".printf(this.pos_x, this.pos_y - 1);
+                string m1 = " %d:%d ".printf(this.pos_x, y_black_pawn + 1);
+                string m2 = " %d:%d ".printf(this.pos_x, y_black_pawn + 2);
+                if (!(m1 in team_positions) && !(m1 in enemy_positions)) {
+                    movements += m1;
+
+                    if (!(m2 in team_positions) && !(m2 in enemy_positions)) {
+                        movements += m2;
+                    }
+                }
+            }
+            // Another move
+            else if (this.color == Utils.TeamType.WHITE && this.pos_y != y_white_pawn) {
+                string m = " %d:%d ".printf(this.pos_x, this.pos_y - 1);
+                if (!(m in team_positions) && !(m in enemy_positions)) {
+                    movements += m;
+                }
             } else if (this.color == Utils.TeamType.BLACK && this.pos_y != y_black_pawn) {
-                movements += " %d:%d ".printf(this.pos_x, this.pos_y + 1);
+                string m = " %d:%d ".printf(this.pos_x, this.pos_y + 1);
+                if (!(m in team_positions) && !(m in enemy_positions)) {
+                    movements += m;
+                }
+            }
+
+            // Eat move
+            if (this.color == Utils.TeamType.WHITE) {
+                string m1 = " %d:%d ".printf(this.pos_x - 1, this.pos_y - 1);
+                string m2 = " %d:%d ".printf(this.pos_x + 1, this.pos_y - 1);
+                if (m1 in enemy_positions) {
+                    movements += m1;
+                }
+
+                if (m2 in enemy_positions) {
+                    movements += m2;
+                }
+            } else if (this.color == Utils.TeamType.BLACK) {
+                string m1 = " %d:%d ".printf(this.pos_x - 1, this.pos_y + 1);
+                string m2 = " %d:%d ".printf(this.pos_x + 1, this.pos_y + 1);
+                if (m1 in enemy_positions) {
+                    movements += m1;
+                }
+
+                if (m2 in enemy_positions) {
+                    movements += m2;
+                }
             }
 
             return movements;
