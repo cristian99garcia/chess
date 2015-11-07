@@ -135,7 +135,7 @@ namespace Chess {
                     break;
 
                 case Utils.PieceType.KNIGHT:
-                    movements = this.get_knight_movements();
+                    movements = this.get_knight_movements(team_positions, enemy_positions);
                     break;
 
                 case Utils.PieceType.BISHOP:
@@ -219,45 +219,69 @@ namespace Chess {
             return movements;
         }
 
-        private string get_knight_movements() {
+        private string get_knight_movements(string team_positions, string enemy_positions) {
             string movements = "";
             if (this.pos_x - 2 > 1) {
                 if (this.pos_y - 1 >= 1) {
-                    movements += " %d:%d ".printf(this.pos_x - 2, this.pos_y - 1);
+                    string m = " %d:%d ".printf(this.pos_x - 2, this.pos_y - 1);
+                    if (!(m in team_positions)) {
+                        movements += m;
+                    }
                 }
 
                 if (this.pos_y + 1 <= 8) {
-                    movements += " %d:%d ".printf(this.pos_x - 2, this.pos_y + 1);
+                    string m = " %d:%d ".printf(this.pos_x - 2, this.pos_y + 1);
+                    if (!(m in team_positions)) {
+                        movements += m;
+                    }
                 }
             }
 
             if (this.pos_x + 2 <= 8) {
                 if (this.pos_y - 1 >= 1) {
-                    movements += " %d:%d ".printf(this.pos_x + 2, this.pos_y - 1);
+                    string m = " %d:%d ".printf(this.pos_x + 2, this.pos_y - 1);
+                    if (!(m in team_positions)) {
+                        movements += m;
+                    }
                 }
 
                 if (this.pos_y + 1 <= 8) {
-                    movements += " %d:%d ".printf(this.pos_x + 2, this.pos_y + 1);
+                    string m = " %d:%d ".printf(this.pos_x + 2, this.pos_y + 1);
+                    if (!(m in team_positions)) {
+                        movements += m;
+                    }
                 }
             }
 
             if (this.pos_y - 2 >= 1) {
                 if (this.pos_x - 1 >= 1) {
-                    movements += " %d:%d ".printf(this.pos_x - 1, this.pos_y - 2);
+                    string m = " %d:%d ".printf(this.pos_x - 1, this.pos_y - 2);
+                    if (!(m in team_positions)) {
+                        movements += m;
+                    }
                 }
 
                 if (this.pos_x + 1 <= 8) {
-                    movements += " %d:%d ".printf(this.pos_x + 1, this.pos_y - 2);
+                    string m = " %d:%d ".printf(this.pos_x + 1, this.pos_y - 2);
+                    if (!(m in team_positions)) {
+                        movements += m;
+                    }
                 }
             }
 
             if (this.pos_y + 2 <= 8) {
                 if (this.pos_x - 1 >= 1) {
-                    movements += " %d:%d ".printf(this.pos_x - 1, this.pos_y + 2);
+                    string m = " %d:%d ".printf(this.pos_x - 1, this.pos_y + 2);
+                    if (!(m in team_positions)) {
+                        movements += m;
+                    }
                 }
 
                 if (this.pos_x + 1 <= 8) {
-                    movements += " %d:%d ".printf(this.pos_x + 1, this.pos_y + 2);
+                    string m = " %d:%d ".printf(this.pos_x + 1, this.pos_y + 2);
+                    if (!(m in team_positions)) {
+                        movements += m;
+                    }
                 }
             }
 
